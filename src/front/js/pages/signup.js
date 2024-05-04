@@ -3,41 +3,33 @@ import { Context } from "../store/appContext";
 
 import "../../styles/home.css";
 
-export const Login = () => {
+export const Signup = () => {
 	const { store, actions } = useContext(Context);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleClick = ()=> {
-
-		const opts = {
-			method: "POST",
-			Headers: {
-				"Content-type": "application/json"
-			},
-			body: JSON.stringify({
-				"email": email,
-				"password": password,
-			})
-		}
-		fetch("https://bug-free-xylophone-q77655j6p7jrhxxpr-3000.app.github.dev/api/token", opts)
-			.then(resp => {
-				if (resp.status === 200) return resp.json();
-				else alert("there was an error");
-			})
-			.then()
-			.catch(error =>{
-				console.error("")
-			})
+	const handleSubmit = async (e) => {
+        e.preventDefault();
+        const response = await fetch("/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        console.log(data);
+       
 	}
+	
 
 	return (
 		<div className="text-center mt-5">
-			<h1>Login</h1>
+			<h1>Signup</h1>
             <div>
                 <input type="text" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                <button onClick={handleClick}>Login</button>
+                <button onClick={handleSubmit}>Signup</button>
             </div>
 		
 		</div>
